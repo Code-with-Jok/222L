@@ -1,7 +1,4 @@
-@import "tailwindcss";
+@import "@repo/ui/shadcn.css";
 
 /* 1. Chỉ định nguồn quét (Scan) mã nguồn UI Package */
 @source "../../../../packages/ui/src/**/*.tsx";
-
-/* 2. Import Shared Theme */
-@import "@repo/ui/shadcn.css";
