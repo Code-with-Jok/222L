@@ -1,4 +1,4 @@
-import { type JSX } from "react";
+import { type JSX, type ReactNode } from "react";
 
 export function Code({
   children,

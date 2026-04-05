@@ -19,8 +19,14 @@
   }
 }
 
+/* 
+  Intentional use of Tailwind v4 and @theme inline.
+  This differs from apps/web which uses plain CSS.
+  --background and --foreground are managed via :root.
+*/
+
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans), system-ui, Arial, Helvetica, sans-serif;
 }
