@@ -1,4 +1,127 @@
+@config "../tailwind.config.ts";
 @import "@repo/ui/shadcn.css";
+@import "./tokens.css";
 
-/* 1. Chỉ định nguồn quét (Scan) mã nguồn UI Package */
 @source "../../../../packages/ui/src/**/*.tsx";
+
+@layer base {
+  body {
+    background-color: var(--color-surface-base);
+    color: var(--color-text-primary);
+    overflow-x: hidden;
+    font-feature-settings: "ss01", "ss02", "cv01", "cv11";
+  }
+}
+
+@layer utilities {
+  .glass-surface {
+    background: var(--color-surface-card);
+    backdrop-filter: var(--blur-glass);
+    border: 1px solid var(--color-border-card);
+    box-shadow: var(--shadow-card);
+    transition: all var(--duration-base) var(--ease-spring);
+  }
+
+  .glass-surface:hover {
+    background: var(--color-surface-card-hover);
+    border-color: var(--color-border-card-hover);
+    box-shadow: var(--shadow-card-hover);
+    transform: translateY(-6px) scale(1.01);
+  }
+
+  .glass-nav {
+    background: var(--color-surface-nav);
+    backdrop-filter: var(--blur-nav);
+    border: 1px solid var(--color-border-nav);
+    box-shadow: var(--shadow-nav);
+  }
+
+  .text-gradient-brand {
+    background: linear-gradient(
+      to right,
+      var(--color-brand-primary),
+      var(--color-brand-secondary)
+    );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .headline-clarity {
+    text-shadow:
+      0 2px 12px rgba(255, 107, 53, 0.3),
+      0 0 40px rgba(255, 107, 53, 0.18);
+  }
+
+  .btn-primary {
+    background: var(--color-brand-primary);
+    color: var(--color-text-on-brand);
+    box-shadow: var(--shadow-btn-brand);
+    transition: all var(--duration-base) ease;
+  }
+
+  .btn-primary:hover {
+    background: var(--color-brand-primary-hover);
+    transform: translateY(-2px);
+  }
+
+  .btn-ghost {
+    background: transparent;
+    color: var(--color-text-muted);
+    transition: all var(--duration-fast) ease;
+  }
+
+  .btn-ghost:hover {
+    background: rgba(26, 26, 46, 0.05); /* very subtle dark hover on cream bg */
+    color: var(--color-text-primary);
+  }
+
+  .badge {
+    background: var(--color-surface-badge);
+    color: var(--color-brand-primary);
+    border: 1px solid var(--color-border-card);
+    font-weight: var(--font-weight-bold);
+    font-size: 0.625rem; /* 10px */
+    letter-spacing: 0.08em; /* reduced from 0.2em */
+    padding: 0.35rem 0.85rem; /* tighten padding */
+  }
+
+  .bg-scrim {
+    background: linear-gradient(
+      to bottom,
+      rgba(253, 246, 238, 0.55) 0%,
+      rgba(253, 246, 238, 0.25) 45%,
+      rgba(253, 246, 238, 0.72) 100%
+    );
+  }
+
+  .bg-vignette {
+    background: radial-gradient(
+      ellipse at center,
+      transparent 25%,
+      rgba(253, 246, 238, 0.5) 100%
+    );
+    pointer-events: none;
+  }
+
+  .icon-glow-orange {
+    filter: drop-shadow(var(--shadow-icon-orange));
+  }
+
+  .icon-glow-gold {
+    filter: drop-shadow(var(--shadow-icon-gold));
+  }
+
+  .floating-card {
+    animation: float var(--duration-float) ease-in-out infinite;
+  }
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}

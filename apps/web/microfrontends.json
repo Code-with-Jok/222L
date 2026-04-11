@@ -13,7 +13,7 @@
       },
       "routing": [
         {
-          "paths": ["/landing", "/landing/:path*"]
+          "paths": ["/", "/landing", "/landing/:path*"]
         }
       ]
     }

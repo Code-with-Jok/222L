@@ -1,0 +1,101 @@
+:root {
+  /* === BRAND === */
+  --color-brand-primary: #ff6b35;
+  --color-brand-secondary: #ff8c69; /* coral, replaces gold */
+  --color-brand-primary-hover: #e85a27;
+  --color-brand-accent: #ffb347; /* gold, now tertiary only */
+
+  /* === CREAM SURFACE SYSTEM === */
+  --color-surface-base: #fdf6ee; /* warm cream base */
+  --color-surface-card: rgba(255, 250, 244, 0.85); /* frosted cream card */
+  --color-surface-card-hover: rgba(255, 250, 244, 0.95);
+  --color-surface-nav: rgba(253, 246, 238, 0.8); /* frosted cream nav */
+  --color-surface-overlay: rgba(253, 246, 238, 0.35); /* light scrim on bg */
+  --color-surface-badge: rgba(255, 107, 53, 0.1); /* orange tint badge */
+
+  /* === TEXT (DARK on light bg) === */
+  --color-text-primary: #1a1a2e; /* deep navy charcoal */
+  --color-text-secondary: #5a5a7a; /* medium dark */
+  --color-text-muted: #6b6b8a; /* muted purple-grey */
+  --color-text-on-brand: #ffffff; /* white on orange buttons */
+
+  /* === BORDER === */
+  --color-border-card: rgba(255, 107, 53, 0.12);
+  --color-border-card-hover: rgba(255, 107, 53, 0.3);
+  --color-border-nav: rgba(255, 107, 53, 0.15);
+
+  /* === TYPOGRAPHY SCALE === */
+  --font-display: "Nunito", sans-serif;
+  --font-body: "Quicksand", sans-serif;
+
+  --text-xs: 0.6875rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.25rem;
+  --text-4xl: 2.25rem;
+  --text-6xl: 3.75rem;
+  --text-9xl: 8rem;
+
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  --font-weight-black: 900;
+
+  --leading-tight: 0.9;
+  --leading-snug: 1.2;
+  --leading-relaxed: 1.6;
+
+  --tracking-tight: -0.02em;
+  --tracking-normal: 0;
+  --tracking-wide: 0.05em;
+  --tracking-widest: 0.2em;
+
+  /* === SPACING SCALE === */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+  --space-20: 5rem;
+
+  /* === BORDER RADIUS === */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --radius-full: 9999px;
+
+  /* === SHADOWS (warm, not cold) === */
+  --shadow-card:
+    0 4px 24px rgba(255, 107, 53, 0.08), 0 1px 4px rgba(0, 0, 0, 0.04);
+  --shadow-card-hover:
+    0 20px 60px rgba(255, 107, 53, 0.22), 0 8px 24px rgba(0, 0, 0, 0.1),
+    0 2px 6px rgba(255, 107, 53, 0.12);
+  --shadow-btn-brand: 0 8px 20px rgba(255, 107, 53, 0.35);
+  --shadow-nav:
+    0 4px 24px rgba(255, 107, 53, 0.1), 0 1px 3px rgba(0, 0, 0, 0.06);
+
+  /* === BLUR (cream frosted) === */
+  --blur-glass: blur(24px) saturate(160%);
+  --blur-nav: blur(20px) saturate(150%);
+
+  /* === Z-INDEX SCALE === */
+  --z-background: -10;
+  --z-overlay: 10;
+  --z-content: 20;
+  --z-nav: 50;
+
+  /* === ANIMATION === */
+  --duration-fast: 200ms;
+  --duration-base: 400ms;
+  --duration-slow: 800ms;
+  --duration-float: 6s;
+  --ease-spring: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+}

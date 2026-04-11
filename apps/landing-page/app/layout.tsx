@@ -1,20 +1,24 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Nunito, Quicksand } from "next/font/google";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const quicksand = Quicksand({
   subsets: ["latin"],
+  variable: "--font-body",
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const nunito = Nunito({
   subsets: ["latin"],
+  variable: "--font-display",
+  weight: ["400", "600", "700", "800", "900"],
 });
+
+const metadataFontClasses = `${quicksand.variable} ${nunito.variable}`;
 
 export const metadata: Metadata = {
   title: "Roadmap Product | Landing Page",
-  description: "Learn more about our intelligent Roadmap Product management system.",
+  description:
+    "Learn more about our intelligent Roadmap Product management system.",
 };
 
 export default function RootLayout({
@@ -25,7 +29,8 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${metadataFontClasses} h-full antialiased`}
+      suppressHydrationWarning
     >
       <body className="min-h-full flex flex-col">{children}</body>
     </html>
