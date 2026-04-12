@@ -11,7 +11,7 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
 } from "@repo/ui/components/ui/navigation-menu";
-import { curationItems, exploreItems } from "@/contants";
+import { curationItems, exploreItems } from "@/constants";
 
 export function NavigationMenu() {
   return (

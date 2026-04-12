@@ -12,7 +12,7 @@
 | Project      | Roadmap Hub — Learning Paths Landing Page                          |
 | Stack        | Next.js 16, React 19, Tailwind CSS v4, Framer Motion, Lucide React |
 | Architecture | Monorepo via `@repo/ui` (shared shadcn components)                 |
-| Port         | `3001` (dev)                                                       |
+| Port         | `3000` (dev)                                                       |
 | Theme        | Warm Cream Light — frosted glass cards on 3D landscape background  |
 
 ---
