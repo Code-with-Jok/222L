@@ -48,18 +48,11 @@ const HeroSection = () => {
         >
           <span
             className="text-text-primary block sm:inline"
-            style={{ textShadow: "2px 4px 0px rgba(255,107,53,0.15)" }}
+            style={{ textShadow: "var(--shadow-text-dreams)" }}
           >
             Achieve Your Dreams
           </span>{" "}
-          <span
-            className="text-brand-primary drop-shadow-lg headline-clarity block sm:inline"
-            style={{
-              WebkitTextStroke:
-                "1px rgba(180, 60, 10, 0.3)" /* dark orange stroke */,
-              paintOrder: "stroke fill",
-            }}
-          >
+          <span className="text-brand-primary drop-shadow-lg headline-clarity headline-stroke block sm:inline">
             with Clarity
           </span>
         </motion.h1>
@@ -69,15 +62,7 @@ const HeroSection = () => {
             <motion.div
               initial={{ scale: 0.8, opacity: 0 }}
               whileInView={{ scale: 1, opacity: 1 }}
-              className="flex items-center gap-4 px-8 py-4 rounded-full"
-              style={{
-                background: "rgba(253,246,238,0.75)",
-                backdropFilter: "blur(20px)",
-                border:
-                  "1.5px solid rgba(255,107,53,0.35)" /* stronger border */,
-                boxShadow:
-                  "0 4px 20px rgba(255,107,53,0.15), 0 1px 4px rgba(0,0,0,0.08)",
-              }}
+              className="flex items-center gap-4 px-8 py-4 rounded-full badge-popular-roadmaps"
             >
               <Flame className="w-5 h-5 text-brand-primary fill-current icon-glow-orange" />
               <h2 className="font-display text-text-primary font-bold text-sm sm:text-lg uppercase tracking-widest">
@@ -119,14 +104,7 @@ const HeroSection = () => {
                 </div>
 
                 {/* Icon Container: Soft orange background tint */}
-                <div
-                  className="w-16 h-16 flex items-center justify-center rounded-2xl transition-transform duration-base group-hover:scale-110 group-hover:rotate-6 mb-8"
-                  style={{
-                    background: "rgba(255, 107, 53, 0.08)",
-                    border: "1px solid rgba(255, 107, 53, 0.20)",
-                    boxShadow: "0 0 20px rgba(255, 107, 53, 0.20)",
-                  }}
-                >
+                <div className="w-16 h-16 flex items-center justify-center rounded-2xl transition-transform duration-base group-hover:scale-110 group-hover:rotate-6 mb-8 icon-container-glow">
                   <card.icon
                     className={`w-8 h-8 ${card.iconClass}`}
                     strokeWidth={2.5}

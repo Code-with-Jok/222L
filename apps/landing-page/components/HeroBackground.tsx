@@ -7,13 +7,11 @@ const HeroBackground = () => {
       <Image
         src={imgHero.src}
         alt="Hero Background"
-        className="w-full h-full object-cover scale-100 pointer-events-none"
+        className="w-full h-full object-cover scale-105 pointer-events-none"
         fill
       />
 
       <div className="absolute inset-0 z-overlay bg-scrim" />
-
-      {/* <div className="absolute inset-0 z-content bg-vignette" /> */}
     </div>
   );
 };

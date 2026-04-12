@@ -18,11 +18,11 @@ export function NavigationMenu() {
     <NavigationMenuUI>
       <NavigationMenuList>
         <NavigationMenuItem>
-          <NavigationMenuTrigger className="font-body font-medium text-sm uppercase tracking-wide text-text-muted hover:text-text-primary bg-transparent hover:bg-transparent data-[active]:text-brand-primary data-[state=open]:text-brand-primary transition-all duration-base">
+          <NavigationMenuTrigger className="font-body font-medium text-sm uppercase tracking-wide text-text-muted hover:text-text-primary data-[active]:text-brand-primary data-[state=open]:text-brand-primary bg-transparent hover:bg-transparent transition-all duration-base">
             Explore
           </NavigationMenuTrigger>
           <NavigationMenuContent>
-            <ul className="grid w-[400px] gap-2 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
+            <ul className="grid nav-width-sm gap-2 p-4 md:nav-width-md md:grid-cols-2 lg:nav-width-lg">
               {exploreItems.map((item) => (
                 <ListItem
                   key={item.title}
@@ -38,11 +38,11 @@ export function NavigationMenu() {
         </NavigationMenuItem>
 
         <NavigationMenuItem className="hidden md:flex">
-          <NavigationMenuTrigger className="font-body font-medium text-sm uppercase tracking-wide text-text-muted hover:text-text-primary bg-transparent hover:bg-transparent data-[active]:text-brand-primary data-[state=open]:text-brand-primary transition-all duration-base">
+          <NavigationMenuTrigger className="font-body font-medium text-sm uppercase tracking-wide text-text-muted hover:text-text-primary data-[active]:text-brand-primary data-[state=open]:text-brand-primary bg-transparent hover:bg-transparent transition-all duration-base">
             Curations
           </NavigationMenuTrigger>
           <NavigationMenuContent>
-            <ul className="grid w-[400px] gap-2 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
+            <ul className="grid nav-width-sm gap-2 p-4 md:nav-width-md md:grid-cols-2 lg:nav-width-lg">
               {curationItems.map((item) => (
                 <ListItem
                   key={item.title}
@@ -81,7 +81,7 @@ function ListItem({
               {title}
             </div>
           </div>
-          <div className="font-body text-[13px] text-text-secondary leading-relaxed group-hover:text-text-primary/80 transition-colors">
+          <div className="font-body text-xs-nav text-text-secondary leading-relaxed group-hover:text-text-primary/80 transition-colors">
             {children}
           </div>
         </Link>
