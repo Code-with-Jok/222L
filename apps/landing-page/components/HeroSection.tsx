@@ -48,25 +48,25 @@ const HeroSection = () => {
         >
           <span
             className="text-text-primary block sm:inline"
-            style={{ textShadow: "2px 4px 0px rgba(255,107,53,0.15)" }}
+            style={{ textShadow: "var(--shadow-text-dreams)" }}
           >
             Achieve Your Dreams
           </span>{" "}
-          <span className="text-brand-primary drop-shadow-lg headline-clarity block sm:inline">
+          <span className="text-brand-primary drop-shadow-lg headline-clarity headline-stroke block sm:inline">
             with Clarity
           </span>
         </motion.h1>
 
-        <div className="w-full mt-12">
-          <div className="flex flex-col items-center gap-6 mb-16">
+        <div className="w-full mt-0">
+          <div className="flex flex-col items-center gap-6 mb-20">
             <motion.div
               initial={{ scale: 0.8, opacity: 0 }}
               whileInView={{ scale: 1, opacity: 1 }}
-              className="flex items-center gap-4 px-8 py-4 glass-surface rounded-full"
+              className="flex items-center gap-4 px-8 py-4 rounded-full badge-popular-roadmaps"
             >
               <Flame className="w-5 h-5 text-brand-primary fill-current icon-glow-orange" />
               <h2 className="font-display text-text-primary font-bold text-sm sm:text-lg uppercase tracking-widest">
-                Popular Curations
+                Popular Roadmaps
               </h2>
             </motion.div>
           </div>
@@ -104,14 +104,7 @@ const HeroSection = () => {
                 </div>
 
                 {/* Icon Container: Soft orange background tint */}
-                <div
-                  className="w-16 h-16 flex items-center justify-center rounded-2xl transition-transform duration-base group-hover:scale-110 group-hover:rotate-6 mb-8"
-                  style={{
-                    background: "rgba(255, 107, 53, 0.08)",
-                    border: "1px solid rgba(255, 107, 53, 0.20)",
-                    boxShadow: "0 0 20px rgba(255, 107, 53, 0.20)",
-                  }}
-                >
+                <div className="w-16 h-16 flex items-center justify-center rounded-2xl transition-transform duration-base group-hover:scale-110 group-hover:rotate-6 mb-8 icon-container-glow">
                   <card.icon
                     className={`w-8 h-8 ${card.iconClass}`}
                     strokeWidth={2.5}
@@ -122,7 +115,7 @@ const HeroSection = () => {
                   <h3 className="font-display font-bold text-2xl tracking-tight text-text-primary group-hover:text-brand-primary transition-colors duration-fast">
                     {card.title}
                   </h3>
-                  <p className="font-body text-text-muted text-sm leading-relaxed font-medium">
+                  <p className="font-body text-text-muted text-sm leading-relaxed font-semibold">
                     {card.desc}
                   </p>
                 </div>

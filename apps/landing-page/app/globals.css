@@ -2,7 +2,7 @@
 @import "@repo/ui/shadcn.css";
 @import "./tokens.css";
 
-@source "../../../../packages/ui/src/**/*.tsx";
+@source "../../../packages/ui/src/**/*.tsx";
 
 @layer base {
   body {
@@ -47,9 +47,12 @@
   }
 
   .headline-clarity {
-    text-shadow:
-      0 2px 12px rgba(255, 107, 53, 0.3),
-      0 0 40px rgba(255, 107, 53, 0.18);
+    text-shadow: var(--shadow-dark), var(--shadow-ground), var(--glow-orange);
+  }
+
+  .headline-stroke {
+    -webkit-text-stroke: 1px var(--color-text-stroke-clarity);
+    paint-order: stroke fill;
   }
 
   .btn-primary {
@@ -71,7 +74,7 @@
   }
 
   .btn-ghost:hover {
-    background: rgba(26, 26, 46, 0.05); /* very subtle dark hover on cream bg */
+    background: var(--color-scrim-dark);
     color: var(--color-text-primary);
   }
 
@@ -86,12 +89,14 @@
   }
 
   .bg-scrim {
-    background: linear-gradient(
-      to bottom,
-      rgba(253, 246, 238, 0.55) 0%,
-      rgba(253, 246, 238, 0.25) 45%,
-      rgba(253, 246, 238, 0.72) 100%
-    );
+    background: linear-gradient(#fdf6ee8c 0%, #fd870000 45%, #4536252b 100%);
+  }
+
+  .badge-popular-roadmaps {
+    background: var(--color-badge-glass-bg);
+    backdrop-filter: blur(24px);
+    border: 1.5px solid var(--color-badge-glass-border);
+    box-shadow: var(--shadow-badge-glass);
   }
 
   .bg-vignette {
@@ -111,8 +116,47 @@
     filter: drop-shadow(var(--shadow-icon-gold));
   }
 
+  .icon-container-glow {
+    background: var(--color-icon-bg-orange);
+    border: 1px solid var(--color-icon-border-orange);
+    box-shadow: var(--shadow-icon-glow-orange);
+  }
+
   .floating-card {
     animation: float var(--duration-float) ease-in-out infinite;
+  }
+
+  /* === NAVIGATION MENU OVERRIDES === */
+  /* Override shadcn NavigationMenu defaults to match cream theme */
+
+  [data-slot="navigation-menu-viewport"] {
+    background: var(--color-nav-viewport) !important;
+    backdrop-filter: var(--blur-glass) !important;
+    border: 1px solid var(--color-nav-border-accent) !important;
+    border-radius: 1.25rem !important;
+    box-shadow:
+      var(--shadow-nav-viewport-glow), var(--shadow-nav-viewport-soft) !important;
+    margin-top: 0.75rem !important;
+  }
+
+  .nav-width-sm {
+    width: 400px;
+  }
+  .nav-width-md {
+    width: 500px;
+  }
+  .nav-width-lg {
+    width: 600px;
+  }
+  .text-xs-nav {
+    font-size: 13px;
+  }
+
+  /* Content items should sit cleanly inside the viewport */
+  [data-slot="navigation-menu-content"] {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
   }
 }
 

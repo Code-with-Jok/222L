@@ -81,9 +81,33 @@
   --shadow-nav:
     0 4px 24px rgba(255, 107, 53, 0.1), 0 1px 3px rgba(0, 0, 0, 0.06);
 
+  /* New Tokens */
+  --shadow-dark: 0 0 20px rgba(0, 0, 0, 0.4);
+  --shadow-ground: 0 2px 8px rgba(0, 0, 0, 0.35);
+  --glow-orange: 0 0 60px rgba(255, 107, 53, 0.25);
+  --shadow-nav-viewport-glow: 0 20px 40px -10px rgba(255, 107, 53, 0.12);
+  --shadow-nav-viewport-soft: 0 4px 12px -2px rgba(0, 0, 0, 0.06);
+  --shadow-badge-glass: 0 4px 20px rgba(255, 107, 53, 0.15),
+    0 1px 4px rgba(0, 0, 0, 0.08);
+
   /* === BLUR (cream frosted) === */
   --blur-glass: blur(24px) saturate(160%);
   --blur-nav: blur(20px) saturate(150%);
+
+  /* === COLORS (utility) === */
+  --color-scrim-dark: rgba(26, 26, 46, 0.05);
+  --color-scrim-top: #fdf6ee8c;
+  --color-scrim-mid: #fd870000;
+  --color-scrim-bottom: #4536252b;
+  --color-nav-viewport: rgba(253, 246, 238, 0.95);
+  --color-nav-border-accent: rgba(255, 107, 53, 0.18);
+  --color-badge-glass-bg: rgba(253, 246, 238, 0.75);
+  --color-badge-glass-border: rgba(255, 107, 53, 0.35);
+  --color-text-stroke-clarity: rgba(180, 60, 10, 0.3);
+  --shadow-text-dreams: 2px 4px 0px rgba(255, 107, 53, 0.15);
+  --color-icon-bg-orange: rgba(255, 107, 53, 0.08);
+  --color-icon-border-orange: rgba(255, 107, 53, 0.2);
+  --shadow-icon-glow-orange: 0 0 20px rgba(255, 107, 53, 0.2);
 
   /* === Z-INDEX SCALE === */
   --z-background: -10;

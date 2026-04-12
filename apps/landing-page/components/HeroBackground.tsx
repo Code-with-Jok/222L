@@ -10,6 +10,8 @@ const HeroBackground = () => {
         className="w-full h-full object-cover scale-105 pointer-events-none"
         fill
       />
+
+      <div className="absolute inset-0 z-overlay bg-scrim" />
     </div>
   );
 };
