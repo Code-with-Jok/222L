@@ -1,8 +1,8 @@
-import nextPkg from "@repo/eslint-config/next";
+import { nextJsConfig } from "@repo/config/eslint/next";
 import { defineConfig, globalIgnores } from "eslint/config";
 
 const eslintConfig = defineConfig([
-  ...nextPkg,
+  ...nextJsConfig,
   // Override default ignores of eslint-config-next.
   globalIgnores([
     // Default ignores of eslint-config-next:

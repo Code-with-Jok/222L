@@ -1,8 +1,20 @@
-import { withMicrofrontends } from "@vercel/microfrontends/next/config";
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  async redirects() {
+    return [
+      {
+        source: "/landing",
+        destination: "/",
+        permanent: false,
+      },
+      {
+        source: "/landing/:path*",
+        destination: "/",
+        permanent: false,
+      },
+    ];
+  },
 };
 
-export default withMicrofrontends(nextConfig);
+export default nextConfig;
