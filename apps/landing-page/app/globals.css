@@ -2,7 +2,7 @@
 @import "@repo/ui/shadcn.css";
 @import "./tokens.css";
 
-@source "../../../../packages/ui/src/**/*.tsx";
+@source "../../../packages/ui/src/**/*.tsx";
 
 @layer base {
   body {
@@ -48,8 +48,9 @@
 
   .headline-clarity {
     text-shadow:
-      0 2px 12px rgba(255, 107, 53, 0.3),
-      0 0 40px rgba(255, 107, 53, 0.18);
+      0 0 20px rgba(0, 0, 0, 0.4),
+      /* dark halo for separation */ 0 2px 8px rgba(0, 0, 0, 0.35),
+      /* grounding shadow */ 0 0 60px rgba(255, 107, 53, 0.25); /* keep orange glow subtle */
   }
 
   .btn-primary {
@@ -86,12 +87,7 @@
   }
 
   .bg-scrim {
-    background: linear-gradient(
-      to bottom,
-      rgba(253, 246, 238, 0.55) 0%,
-      rgba(253, 246, 238, 0.25) 45%,
-      rgba(253, 246, 238, 0.72) 100%
-    );
+    background: linear-gradient(#fdf6ee8c 0%, #fd870000 45%, #4536252b 100%);
   }
 
   .bg-vignette {
@@ -113,6 +109,27 @@
 
   .floating-card {
     animation: float var(--duration-float) ease-in-out infinite;
+  }
+
+  /* === NAVIGATION MENU OVERRIDES === */
+  /* Override shadcn NavigationMenu defaults to match cream theme */
+
+  [data-slot="navigation-menu-viewport"] {
+    background: rgba(253, 246, 238, 0.95) !important;
+    backdrop-filter: blur(24px) saturate(160%) !important;
+    border: 1px solid rgba(255, 107, 53, 0.18) !important;
+    border-radius: 1.25rem !important; /* ~20px */
+    box-shadow:
+      0 20px 40px -10px rgba(255, 107, 53, 0.12),
+      0 4px 12px -2px rgba(0, 0, 0, 0.06) !important;
+    margin-top: 0.75rem !important;
+  }
+
+  /* Content items should sit cleanly inside the viewport */
+  [data-slot="navigation-menu-content"] {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
   }
 }
 

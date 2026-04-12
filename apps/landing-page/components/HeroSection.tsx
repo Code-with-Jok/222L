@@ -52,21 +52,36 @@ const HeroSection = () => {
           >
             Achieve Your Dreams
           </span>{" "}
-          <span className="text-brand-primary drop-shadow-lg headline-clarity block sm:inline">
+          <span
+            className="text-brand-primary drop-shadow-lg headline-clarity block sm:inline"
+            style={{
+              WebkitTextStroke:
+                "1px rgba(180, 60, 10, 0.3)" /* dark orange stroke */,
+              paintOrder: "stroke fill",
+            }}
+          >
             with Clarity
           </span>
         </motion.h1>
 
-        <div className="w-full mt-12">
-          <div className="flex flex-col items-center gap-6 mb-16">
+        <div className="w-full mt-0">
+          <div className="flex flex-col items-center gap-6 mb-20">
             <motion.div
               initial={{ scale: 0.8, opacity: 0 }}
               whileInView={{ scale: 1, opacity: 1 }}
-              className="flex items-center gap-4 px-8 py-4 glass-surface rounded-full"
+              className="flex items-center gap-4 px-8 py-4 rounded-full"
+              style={{
+                background: "rgba(253,246,238,0.75)",
+                backdropFilter: "blur(20px)",
+                border:
+                  "1.5px solid rgba(255,107,53,0.35)" /* stronger border */,
+                boxShadow:
+                  "0 4px 20px rgba(255,107,53,0.15), 0 1px 4px rgba(0,0,0,0.08)",
+              }}
             >
               <Flame className="w-5 h-5 text-brand-primary fill-current icon-glow-orange" />
               <h2 className="font-display text-text-primary font-bold text-sm sm:text-lg uppercase tracking-widest">
-                Popular Curations
+                Popular Roadmaps
               </h2>
             </motion.div>
           </div>
@@ -122,7 +137,7 @@ const HeroSection = () => {
                   <h3 className="font-display font-bold text-2xl tracking-tight text-text-primary group-hover:text-brand-primary transition-colors duration-fast">
                     {card.title}
                   </h3>
-                  <p className="font-body text-text-muted text-sm leading-relaxed font-medium">
+                  <p className="font-body text-text-muted text-sm leading-relaxed font-semibold">
                     {card.desc}
                   </p>
                 </div>

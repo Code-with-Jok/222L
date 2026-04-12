@@ -16,9 +16,9 @@ const nunito = Nunito({
 const metadataFontClasses = `${quicksand.variable} ${nunito.variable}`;
 
 export const metadata: Metadata = {
-  title: "Roadmap Product | Landing Page",
+  title: "Roadmap Hub",
   description:
-    "Learn more about our intelligent Roadmap Product management system.",
+    "Learn more about our intelligent Roadmap Hub management system.",
 };
 
 export default function RootLayout({

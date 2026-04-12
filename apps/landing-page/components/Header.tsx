@@ -2,7 +2,7 @@
 
 import imgLogo from "@/public/vercel.svg";
 import Image from "next/image";
-import Link from "next/link";
+import { NavigationMenu } from "./NavigationMenu";
 
 const Header = () => {
   return (
@@ -24,18 +24,7 @@ const Header = () => {
 
       <div className="flex items-center gap-2 sm:gap-10">
         <nav className="hidden md:flex items-center gap-10">
-          <Link
-            href="#"
-            className="text-text-muted hover:text-text-primary text-base font-body font-medium uppercase tracking-wide transition-all duration-base"
-          >
-            Explore
-          </Link>
-          <Link
-            href="#"
-            className="text-text-muted hover:text-text-primary text-base font-body font-medium uppercase tracking-wide transition-all duration-base"
-          >
-            Curations
-          </Link>
+          <NavigationMenu />
         </nav>
 
         <div className="flex items-center gap-3">
