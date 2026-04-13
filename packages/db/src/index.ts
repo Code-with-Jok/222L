@@ -8,3 +8,6 @@ export interface DatabaseConfig {
 export function defineDatabaseConfig(config: DatabaseConfig): DatabaseConfig {
   return config;
 }
+
+export { prisma } from "./client"; // exports instance of prisma
+export * from "./generated/prisma/client"; // exports generated types from prisma
