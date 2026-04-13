@@ -10,7 +10,7 @@ model User{
   passwordHash  String @map("password_hash")
   role          Role   @default(USER)
 
-  createAt DateTime @default(now()) @map("created_at")
+  createdAt DateTime @default(now()) @map("created_at")
 
   // 1 - N relationship with Session 
   sessions Session[]
