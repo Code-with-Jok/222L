@@ -13,13 +13,18 @@
   "scripts": {
     "db:generate": "prisma generate",
     "db:migrate": "prisma migrate dev",
+    "db:push": "prisma db push",
+    "db:studio": "prisma studio",
     "db:deploy": "prisma migrate deploy",
+    "db:seed": "tsx prisma/seed.ts",
     "lint": "eslint . --max-warnings 0",
     "check-types": "tsc --noEmit"
   },
   "devDependencies": {
     "@repo/config": "workspace:*",
     "@types/node": "^25.6.0",
+    "@types/pg": "^8.20.0",
+    "dotenv": "^17.4.1",
     "eslint": "^9.39.1",
     "prisma": "^7.7.0",
     "tsx": "^4.21.0",
@@ -28,7 +33,6 @@
   "dependencies": {
     "@prisma/adapter-pg": "^7.7.0",
     "@prisma/client": "^7.7.0",
-    "dotenv": "^17.4.1",
     "pg": "^8.20.0"
   }
 }

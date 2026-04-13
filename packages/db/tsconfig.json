@@ -2,8 +2,7 @@
   "extends": "@repo/config/typescript/base.json",
   "compilerOptions": {
     "lib": ["es2022"],
-    "noEmit": true,
-    "moduleResolution": "bundler"
+    "noEmit": true
   },
   "include": ["src"],
   "exclude": ["node_modules", "dist"]
