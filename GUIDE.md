@@ -62,6 +62,7 @@ model Session {
 
 ## Bước 1.3 & 1.12: Tạo enum cho Roadmap và model `Roadmap`
 Tạo `RoadmapType` và `RoadmapStatus`. Tạo model `Roadmap` với các trường, quan hệ cơ bản, định nghĩa `@@map("roadmaps")`, và bổ sung index `(status, deletedAt)` như yêu cầu 1.12.
+*(Lưu ý: Model Roadmap có bổ sung thêm mảng quan hệ `referencedByNodes` để liên kết ngược lại khi một Node đóng vai trò là một Roadmap con)*
 
 ```prisma
 enum RoadmapType {
@@ -87,11 +88,12 @@ model Roadmap {
   deletedAt   DateTime?
 
   // Relations
-  author      User               @relation(fields: [authorId], references: [id])
-  versions    RoadmapVersion[]
-  nodes       RoadmapNode[]
-  tags        TagsOnRoadmaps[]
-  progress    UserProgress[]
+  author            User               @relation(fields: [authorId], references: [id])
+  versions          RoadmapVersion[]
+  nodes             RoadmapNode[]      @relation("RoadmapToNodes")
+  tags              TagsOnRoadmaps[]
+  progress          UserProgress[]
+  referencedByNodes RoadmapNode[]      @relation("NodeToReferencedRoadmap")
 
   @@index([status, deletedAt])
   @@map("roadmaps")
@@ -117,13 +119,16 @@ model RoadmapVersion {
 ```
 
 ## Bước 1.5 & 1.12: Tạo enums cho Node và model `RoadmapNode`
-Tạo `NodeType`, `NodeStatus` và model `RoadmapNode`. Model này có quan hệ tự tham chiếu cho cấu trúc cha-con, composite index `(roadmapId, parentId, order)` và unique constraint.
+Tạo `NodeType` (bao gồm `ROADMAP` và `TECHSTACK`), `NodeStatus` và model `RoadmapNode`. Model này có quan hệ tự tham chiếu cho cấu trúc cha-con, composite index `(roadmapId, parentId, order)` và unique constraint.
+Trường `referenceRoadmapId` được thêm vào để trỏ đến một `Roadmap` khác nếu loại node này là `ROADMAP` (tức là node lồng ghép một roadmap khác).
 
 ```prisma
 enum NodeType {
   CONCEPT
   PRACTICE
   PROJECT
+  ROADMAP
+  TECHSTACK
 }
 
 enum NodeStatus {
@@ -132,25 +137,27 @@ enum NodeStatus {
 }
 
 model RoadmapNode {
-  id          String      @id @default(uuid())
-  roadmapId   String
-  title       String
-  slug        String
-  description String?
-  type        NodeType    @default(CONCEPT)
-  status      NodeStatus  @default(DRAFT)
-  parentId    String?
-  order       Int         @default(0)
-  createdAt   DateTime    @default(now())
-  updatedAt   DateTime    @updatedAt
+  id                 String      @id @default(uuid())
+  roadmapId          String
+  title              String
+  slug               String
+  description        String?
+  type               NodeType    @default(CONCEPT)
+  status             NodeStatus  @default(DRAFT)
+  parentId           String?
+  referenceRoadmapId String?
+  order              Int         @default(0)
+  createdAt          DateTime    @default(now())
+  updatedAt          DateTime    @updatedAt
 
   // Relations
-  roadmap     Roadmap           @relation(fields: [roadmapId], references: [id], onDelete: Cascade)
-  parent      RoadmapNode?      @relation("NodeToNode", fields: [parentId], references: [id])
-  children    RoadmapNode[]     @relation("NodeToNode")
-  resources   TopicResource[]
-  tags        TagsOnNodes[]
-  progress    UserProgress[]
+  roadmap           Roadmap           @relation("RoadmapToNodes", fields: [roadmapId], references: [id], onDelete: Cascade)
+  parent            RoadmapNode?      @relation("NodeToNode", fields: [parentId], references: [id])
+  children          RoadmapNode[]     @relation("NodeToNode")
+  referencedRoadmap Roadmap?          @relation("NodeToReferencedRoadmap", fields: [referenceRoadmapId], references: [id])
+  resources         TopicResource[]
+  tags              TagsOnNodes[]
+  progress          UserProgress[]
 
   @@unique([roadmapId, slug])
   @@index([roadmapId, parentId, order])
