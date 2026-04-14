@@ -1,5 +1,5 @@
 import "dotenv/config";
-import { PrismaClient } from "./src/generated/prisma";
+import { PrismaClient } from "./src/generated/client/index.js";
 import { PrismaPg } from "@prisma/adapter-pg";
 import { Pool } from "pg";
 
@@ -16,7 +16,7 @@ async function main() {
         email: "test@example.com",
         passwordHash: "123",
         sessions: {
-          create: [{}]
+          create: [{ expiresAt: new Date(Date.now() + 60_000) }]
         }
       }
     });
