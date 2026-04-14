@@ -4,25 +4,36 @@ enum Role{
 }
 
 model User{
-  id            String @id @default(uuid())
-  email         String @unique
-  name          String?
-  passwordHash  String @map("password_hash")
-  role          Role   @default(USER)
+  id              String    @id @default(uuid())
+  email           String    @unique
+  name            String?
+  passwordHash    String    @map("password_hash")
+  role            Role      @default(USER)
+  displayName     String?   @map("display_name")
+  avatarUrl       String?   @map("avatar_url")
+  isActive        Boolean   @default(true) @map("is_active")
+  emailVerifiedAt DateTime? @map("email_verified_at")
 
-  createdAt DateTime @default(now()) @map("created_at")
+  createdAt       DateTime  @default(now()) @map("created_at")
+  updatedAt       DateTime  @updatedAt @map("updated_at")
+  deletedAt       DateTime? @map("deleted_at")
 
-  // 1 - N relationship with Session 
-  sessions Session[]
+  sessions        Session[]
+  roadmaps        Roadmap[]
 }
 
 model Session{
-  id            String @id @default(uuid())
-  userId        String @map("user_id")
-  expiresAt     DateTime @map("expires_at")
+  id            String  @id @default(uuid())
+  userId        String  @map("user_id")
+  tokenHash     String? @map("token_hash")
+  userAgent     String? @map("user_agent")
+  ipAddress     String?
 
-  // N - 1 relationship with User
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  revokedAt     DateTime? @map("revoked_at")
+  createdAt     DateTime  @default(now()) @map("created_at")
+  updatedAt     DateTime  @updatedAt @map("updated_at")
+
+  user          User @relation(fields: [userId], references: [id], onDelete: Cascade)
   @@map("sessions")
 }
 
