@@ -1,0 +1,37 @@
+enum ResourceType {
+  ARTICLE
+  VIDEO
+  BOOK
+  COURSE
+}
+
+model Topic {
+  id          String   @id @default(uuid())
+  title       String
+  description String?
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  resources TopicResource[] @relation("TopicResources")
+  nodes     RoadmapNode[]   @relation("NodeToTopic")
+
+  @@index([title])
+  @@map("topics")
+}
+
+model TopicResource {
+  id          String       @id @default(uuid())
+  title       String
+  url         String
+  description String?
+  topicId     String       @map("topic_id")
+  type        ResourceType @default(ARTICLE)
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  topic Topic @relation("TopicResources", fields: [topicId], references: [id])
+
+  @@index([title])
+  @@map("topic_resources")
+}

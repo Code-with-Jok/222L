@@ -1,0 +1,41 @@
+model Tag {
+  id          String  @id @default(uuid())
+  name        String  @unique
+  slug        String  @unique
+  description String?
+  color       String?
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  roadmaps TagsOnRoadmaps[] @relation("TagRoadmaps")
+  nodes    TagsOnNodes[]    @relation("TagNodes")
+
+  @@index([name])
+  @@map("tags")
+}
+
+model TagsOnRoadmaps {
+  roadmapId String   @map("roadmap_id")
+  tagId     String   @map("tag_id")
+  createdAt DateTime @default(now())
+
+  roadmap Roadmap @relation("RoadmapTags", fields: [roadmapId], references: [id], onDelete: Cascade)
+
+  tag Tag @relation("TagRoadmaps", fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@unique([roadmapId, tagId])
+  @@map("tags_on_roadmaps")
+}
+
+model TagsOnNodes {
+  nodeId    String   @map("node_id")
+  tagId     String   @map("tag_id")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  node RoadmapNode @relation("NodeTags", fields: [nodeId], references: [id], onDelete: Cascade)
+  tag  Tag         @relation("TagNodes", fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@id([nodeId, tagId])
+  @@map("tags_on_nodes")
+}

@@ -1,28 +1,88 @@
-enum Role{
+enum Role {
   ADMIN
   USER
 }
 
-model User{
-  id            String @id @default(uuid())
-  email         String @unique
-  name          String?
-  passwordHash  String @map("password_hash")
-  role          Role   @default(USER)
-
-  createdAt DateTime @default(now()) @map("created_at")
-
-  // 1 - N relationship with Session 
-  sessions Session[]
+enum ProgressStatus {
+  NOT_STARTED
+  IN_PROGRESS
+  COMPLETED
+  SKIPPED
 }
 
-model Session{
-  id            String @id @default(uuid())
-  userId        String @map("user_id")
-  expiresAt     DateTime @map("expires_at")
+model User {
+  id              String    @id @default(uuid())
+  email           String    @unique
+  name            String?
+  passwordHash    String    @map("password_hash")
+  role            Role      @default(USER)
+  displayName     String?   @map("display_name")
+  avatarUrl       String?   @map("avatar_url")
+  isActive        Boolean   @default(true) @map("is_active")
+  emailVerifiedAt DateTime? @map("email_verified_at")
 
-  // N - 1 relationship with User
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  sessions          Session[]
+  roadmaps          Roadmap[]
+  ownedRoadmaps     Roadmap[]        @relation("RoadmapOwner")
+  createdVersions   RoadmapVersion[] @relation("RoadmapVersionCreatedBy")
+  publishedVersions RoadmapVersion[] @relation("RoadmapVersionPublishedBy")
+  bookmarks         Bookmark[]
+  progressEntries   UserProgress[]
+}
+
+model Session {
+  id        String   @id @default(uuid())
+  userId    String   @map("user_id")
+  expiresAt DateTime @map("expires_at")
+  tokenHash String?  @map("token_hash")
+  userAgent String?  @map("user_agent")
+  ipAddress String?  @map("ip_address")
+
+  revokedAt DateTime? @map("revoked_at")
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, revokedAt, expiresAt])
   @@map("sessions")
 }
 
+model Bookmark {
+  id        String   @id @default(uuid())
+  userId    String   @map("user_id")
+  roadmapId String   @map("roadmap_id")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  roadmap Roadmap @relation(fields: [roadmapId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, roadmapId])
+  @@index([roadmapId, createdAt])
+  @@map("bookmarks")
+}
+
+model UserProgress {
+  id            String         @id @default(uuid())
+  userId        String         @map("user_id")
+  roadmapId     String         @map("roadmap_id")
+  roadmapNodeId String         @map("roadmap_node_id")
+  status        ProgressStatus @default(NOT_STARTED)
+  completedAt   DateTime?      @map("completed_at")
+  lastVisitedAt DateTime?      @map("last_visited_at")
+  createdAt     DateTime       @default(now()) @map("created_at")
+  updatedAt     DateTime       @updatedAt @map("updated_at")
+
+  user        User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  roadmap     Roadmap     @relation(fields: [roadmapId], references: [id], onDelete: Cascade)
+  roadmapNode RoadmapNode @relation(fields: [roadmapNodeId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, roadmapNodeId])
+  @@index([userId, roadmapId, status])
+  @@index([roadmapId, status])
+  @@map("user_progress")
+}
