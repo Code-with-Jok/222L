@@ -5,10 +5,9 @@ model Tag {
   description String?
   color String?
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
 
-  // 1 - N relationship
   roadmaps  TagsOnRoadmaps[] @relation("TagRoadmaps")
   nodes     TagsOnNodes[] @relation("TagNodes")
 
@@ -30,11 +29,10 @@ model TagsOnRoadmaps {
 }
 
 model TagsOnNodes {
-  nodeId    String
-  tagId     String
-  createdAt DateTime @default(now())
+  nodeId    String   @map("node_id")
+  tagId     String   @map("tag_id")
+  createdAt DateTime @default(now()) @map("created_at")
 
-  // N - 1 relationship
   node      RoadmapNode @relation("NodeTags",fields: [nodeId], references: [id], onDelete: Cascade)
   tag       Tag         @relation("TagNodes",fields: [tagId], references: [id], onDelete: Cascade)
 

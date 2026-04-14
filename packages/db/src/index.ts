@@ -10,4 +10,4 @@ export function defineDatabaseConfig(config: DatabaseConfig): DatabaseConfig {
 }
 
 export { prisma } from "./client"; // exports instance of prisma
-export * from "./generated/prisma/client"; // exports generated types from prisma
+export * from "./generated/client/index.js"; // exports generated types from prisma

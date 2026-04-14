@@ -6,11 +6,11 @@ enum ResourceType {
 }
 
 model Topic {
-  id          String     @id @default(cuid())
+  id          String     @id @default(uuid())
   title       String
   description String?
-  createdAt   DateTime   @default(now())
-  updatedAt   DateTime   @updatedAt
+  createdAt   DateTime   @default(now()) @map("created_at")
+  updatedAt   DateTime   @updatedAt @map("updated_at")
 
   resources   TopicResource[] @relation("TopicResources")
   nodes       RoadmapNode[]   @relation("NodeToTopic")
@@ -20,15 +20,15 @@ model Topic {
 }
 
 model TopicResource {
-  id          String     @id @default(cuid())
+  id          String     @id @default(uuid())
   title       String
   url         String
   description String?
-  topicId     String
+  topicId     String     @map("topic_id")
   type        ResourceType @default(ARTICLE)
 
-  createdAt   DateTime   @default(now())
-  updatedAt   DateTime   @updatedAt 
+  createdAt   DateTime   @default(now()) @map("created_at")
+  updatedAt   DateTime   @updatedAt @map("updated_at") 
 
 
   topic       Topic      @relation("TopicResources", fields: [topicId], references: [id])
