@@ -1,4 +1,4 @@
-enum Role{
+enum Role {
   ADMIN
   USER
 }
@@ -10,7 +10,7 @@ enum ProgressStatus {
   SKIPPED
 }
 
-model User{
+model User {
   id              String    @id @default(uuid())
   email           String    @unique
   name            String?
@@ -21,44 +21,45 @@ model User{
   isActive        Boolean   @default(true) @map("is_active")
   emailVerifiedAt DateTime? @map("email_verified_at")
 
-  createdAt       DateTime  @default(now()) @map("created_at")
-  updatedAt       DateTime  @updatedAt @map("updated_at")
-  deletedAt       DateTime? @map("deleted_at")
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
 
-  sessions        Session[]
-  roadmaps        Roadmap[]
-  ownedRoadmaps   Roadmap[] @relation("RoadmapOwner")
-  createdVersions RoadmapVersion[] @relation("RoadmapVersionCreatedBy")
+  sessions          Session[]
+  roadmaps          Roadmap[]
+  ownedRoadmaps     Roadmap[]        @relation("RoadmapOwner")
+  createdVersions   RoadmapVersion[] @relation("RoadmapVersionCreatedBy")
   publishedVersions RoadmapVersion[] @relation("RoadmapVersionPublishedBy")
-  bookmarks       Bookmark[]
-  progressEntries UserProgress[]
+  bookmarks         Bookmark[]
+  progressEntries   UserProgress[]
 }
 
-model Session{
-  id            String  @id @default(uuid())
-  userId        String  @map("user_id")
-  expiresAt     DateTime @map("expires_at")
-  tokenHash     String? @map("token_hash")
-  userAgent     String? @map("user_agent")
-  ipAddress     String? @map("ip_address")
+model Session {
+  id        String   @id @default(uuid())
+  userId    String   @map("user_id")
+  expiresAt DateTime @map("expires_at")
+  tokenHash String?  @map("token_hash")
+  userAgent String?  @map("user_agent")
+  ipAddress String?  @map("ip_address")
 
-  revokedAt     DateTime? @map("revoked_at")
-  createdAt     DateTime  @default(now()) @map("created_at")
-  updatedAt     DateTime  @updatedAt @map("updated_at")
+  revokedAt DateTime? @map("revoked_at")
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
 
-  user          User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
   @@index([userId, revokedAt, expiresAt])
   @@map("sessions")
 }
 
 model Bookmark {
-  id          String   @id @default(uuid())
-  userId      String   @map("user_id")
-  roadmapId   String   @map("roadmap_id")
-  createdAt   DateTime @default(now()) @map("created_at")
+  id        String   @id @default(uuid())
+  userId    String   @map("user_id")
+  roadmapId String   @map("roadmap_id")
+  createdAt DateTime @default(now()) @map("created_at")
 
-  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  roadmap     Roadmap  @relation(fields: [roadmapId], references: [id], onDelete: Cascade)
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  roadmap Roadmap @relation(fields: [roadmapId], references: [id], onDelete: Cascade)
 
   @@unique([userId, roadmapId])
   @@index([roadmapId, createdAt])
@@ -76,13 +77,12 @@ model UserProgress {
   createdAt     DateTime       @default(now()) @map("created_at")
   updatedAt     DateTime       @updatedAt @map("updated_at")
 
-  user          User           @relation(fields: [userId], references: [id], onDelete: Cascade)
-  roadmap       Roadmap        @relation(fields: [roadmapId], references: [id], onDelete: Cascade)
-  roadmapNode   RoadmapNode    @relation(fields: [roadmapNodeId], references: [id], onDelete: Cascade)
+  user        User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  roadmap     Roadmap     @relation(fields: [roadmapId], references: [id], onDelete: Cascade)
+  roadmapNode RoadmapNode @relation(fields: [roadmapNodeId], references: [id], onDelete: Cascade)
 
   @@unique([userId, roadmapNodeId])
   @@index([userId, roadmapId, status])
   @@index([roadmapId, status])
   @@map("user_progress")
 }
-
