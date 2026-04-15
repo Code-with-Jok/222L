@@ -10,68 +10,80 @@ enum RoadmapVisibility {
   UNLISTED
 }
 
+model Roadmap {
+  id          String  @id @default(uuid())
+  title       String
+  description String?
+  slug        String  @unique
+
+  // status/visibility
+  status     RoadmapStatus     @default(DRAFT)
+  visibility RoadmapVisibility @default(PUBLIC)
+
+  // owner
+  ownerId String @map("owner_id")
+  owner   User   @relation("RoadmapOwner", fields: [ownerId], references: [id], onDelete: Cascade)
+
+  // author
+  authorId String @map("author_id")
+  author   User   @relation("RoadmapAuthor", fields: [authorId], references: [id], onDelete: Cascade)
+
+  // version
+  currentVersionId String?          @unique @map("current_version_id")
+  currentVersion   RoadmapVersion?  @relation("RoadmapCurrentVersion", fields: [currentVersionId], references: [id], onDelete: SetNull)
+  versions         RoadmapVersion[] @relation("RoadmapVersions")
+
+  // timestamps
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  // relationships
+  nodes             RoadmapNode[]    @relation("RoadmapNodes")
+  referencedByNodes RoadmapNode[]    @relation("RoadmapReferences")
+  tags              TagsOnRoadmaps[] @relation("RoadmapTags")
+  bookmarks         Bookmark[]       @relation("RoadmapBookmarks")
+  progressEntries   UserProgress[]   @relation("RoadmapProgress")
+
+  @@map("roadmaps")
+}
+
 enum RoadmapVersionStatus {
   DRAFT
   PUBLISHED
   ARCHIVED
 }
 
-model Roadmap {
-  id               String            @id @default(uuid())
-  title            String
-  slug             String            @unique
-  description      String?
-  status           RoadmapStatus     @default(DRAFT)
-  visibility       RoadmapVisibility @default(PUBLIC)
-  currentVersionId String?           @unique @map("current_version_id")
+model RoadmapVersion {
+  id            String @id @default(uuid())
+  roadmapId     String @map("roadmap_id")
+  versionNumber Int    @map("version_number")
+  changelog     String?
+  // content
+  snapshotData Json
+  title        String
+  description  String?
+  status       RoadmapVersionStatus @default(DRAFT)
 
+  // creator
+  createdById   String    @map("created_by_id")
+  publishedById String?   @map("published_by_id")
+  publishedAt   DateTime? @map("published_at")
+
+  // timestamps
   createdAt DateTime  @default(now()) @map("created_at")
   updatedAt DateTime  @updatedAt @map("updated_at")
   deletedAt DateTime? @map("deleted_at")
 
-  authorId           String           @map("author_id")
-  ownerId            String           @map("owner_id")
-  author             User             @relation(fields: [authorId], references: [id])
-  owner              User             @relation("RoadmapOwner", fields: [ownerId], references: [id])
-  currentVersion     RoadmapVersion?  @relation("RoadmapCurrentVersion", fields: [currentVersionId], references: [id], onDelete: SetNull, onUpdate: Cascade)
-  versions           RoadmapVersion[] @relation("RoadmapVersions")
-  nodes              RoadmapNode[]    @relation("RoadmapToNodes")
-  referencedRoadmaps RoadmapNode[]    @relation("NodeToReferencedRoadmap")
-  tags               TagsOnRoadmaps[] @relation("RoadmapTags")
-  bookmarks          Bookmark[]
-  progressEntries    UserProgress[]
-
-  // Indexes
-  @@index([slug, status, deletedAt])
-  @@index([status, deletedAt])
-  @@index([ownerId, status, deletedAt])
-  @@map("roadmap")
-}
-
-model RoadmapVersion {
-  id            String               @id @default(uuid())
-  roadmapId     String               @map("roadmap_id")
-  versionNumber Int                  @map("version_number")
-  snapshotData  Json
-  title         String
-  description   String?
-  status        RoadmapVersionStatus @default(DRAFT)
-  changelog     String?
-  createdById   String               @map("created_by_id")
-  publishedById String?              @map("published_by_id")
-  publishedAt   DateTime?            @map("published_at")
-
-  createdAt DateTime @default(now()) @map("created_at")
-
-  // N - 1 relationship
+  // relationships
   roadmap          Roadmap  @relation("RoadmapVersions", fields: [roadmapId], references: [id], onDelete: Cascade)
   activeForRoadmap Roadmap? @relation("RoadmapCurrentVersion")
-  createdBy        User     @relation("RoadmapVersionCreatedBy", fields: [createdById], references: [id], onDelete: Restrict)
-  publishedBy      User?    @relation("RoadmapVersionPublishedBy", fields: [publishedById], references: [id], onDelete: SetNull)
+  createdBy        User     @relation("RoadmapVersionCreatedBy", fields: [createdById], references: [id], onDelete: Cascade)
+  publishedBy      User?    @relation("RoadmapVersionPublishedBy", fields: [publishedById], references: [id], onDelete: Cascade)
 
-  // Indexes
   @@unique([roadmapId, versionNumber])
-  @@index([roadmapId, status, createdAt])
+  @@index([roadmapId, versionNumber])
+  @@index([status, createdAt])
   @@map("roadmap_versions")
 }
 
@@ -88,8 +100,10 @@ enum NodeStatus {
 }
 
 model RoadmapNode {
-  id                 String     @id @default(uuid())
-  roadmapId          String     @map("roadmap_id")
+  id        String @id @default(uuid())
+  roadmapId String @map("roadmap_id")
+
+  // content
   title              String
   slug               String
   description        String?
@@ -99,24 +113,25 @@ model RoadmapNode {
   referenceRoadmapId String?    @map("reference_roadmap_id")
   order              Int        @default(0)
 
+  // timestamps
   createdAt DateTime  @default(now()) @map("created_at")
   updatedAt DateTime  @updatedAt @map("updated_at")
   deletedAt DateTime? @map("deleted_at")
 
-  // N - 1 relationship
-  roadmap           Roadmap       @relation("RoadmapToNodes", fields: [roadmapId], references: [id], onDelete: Cascade)
-  parent            RoadmapNode?  @relation("NodeToNode", fields: [parentId], references: [id])
-  children          RoadmapNode[] @relation("NodeToNode")
-  referencedRoadmap Roadmap?      @relation("NodeToReferencedRoadmap", fields: [referenceRoadmapId], references: [id])
+  // relationships
+  roadmap          Roadmap       @relation("RoadmapNodes", fields: [roadmapId], references: [id], onDelete: Cascade)
+  parent           RoadmapNode?  @relation("NodeChildren", fields: [parentId], references: [id], onDelete: SetNull)
+  children         RoadmapNode[] @relation("NodeChildren")
+  referenceRoadmap Roadmap?      @relation("RoadmapReferences", fields: [referenceRoadmapId], references: [id], onDelete: SetNull)
 
   topicId String? @map("topic_id")
   topic   Topic?  @relation("NodeToTopic", fields: [topicId], references: [id])
 
   tags            TagsOnNodes[]  @relation("NodeTags")
-  progressEntries UserProgress[]
+  progressEntries UserProgress[] @relation("RoadmapNodeProgress")
 
-  // Indexes
-  @@unique([roadmapId, slug])
-  @@index([roadmapId, parentId, order])
+  @@index([roadmapId, type, status, order])
+  @@index([parentId])
+  @@index([referenceRoadmapId])
   @@map("roadmap_nodes")
 }

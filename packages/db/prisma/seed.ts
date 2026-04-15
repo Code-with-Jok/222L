@@ -14,6 +14,12 @@ import {
 
 const connectionString = process.env.DATABASE_URL;
 
+console.log("Using DATABASE_URL:", connectionString);
+console.log(
+  "Using DATABASE_URL:",
+  connectionString?.replace(/:[^:@]+@/, ":****@")
+);
+
 if (!connectionString) {
   throw new Error("DATABASE_URL is not defined");
 }
@@ -219,7 +225,8 @@ async function main() {
       roadmapId: roadmap.id,
       title: "Build APIs",
       slug: "build-apis",
-      description: "Design RESTful APIs, validation layers, and error handling.",
+      description:
+        "Design RESTful APIs, validation layers, and error handling.",
       type: NodeType.PROJECT,
       status: NodeStatus.PUBLISHED,
       parentId: rootNode.id,
@@ -286,7 +293,6 @@ async function main() {
       title: `${roadmap.title} Draft`,
       description: "Upcoming additions around caching and message queues.",
       status: RoadmapVersionStatus.DRAFT,
-      changelog: "Prepare next iteration with scaling topics.",
       createdById: admin.id,
       snapshotData: {
         roadmap: {
