@@ -3,6 +3,27 @@ enum Role {
   USER
 }
 
+enum AuthTokenPurpose {
+  EMAIL_VERIFICATION
+  PASSWORD_RESET
+}
+
+enum AuditEventType {
+  USER_REGISTERED
+  USER_LOGIN_SUCCEEDED
+  USER_LOGIN_FAILED
+  USER_LOGOUT
+  USER_LOGOUT_ALL
+  USER_EMAIL_VERIFICATION_REQUESTED
+  USER_EMAIL_VERIFIED
+  USER_PASSWORD_RESET_REQUESTED
+  USER_PASSWORD_RESET_COMPLETED
+  USER_PASSWORD_CHANGED
+  SESSION_CREATED
+  SESSION_REFRESHED
+  SESSION_REVOKED
+}
+
 enum ProgressStatus {
   NOT_STARTED
   IN_PROGRESS
@@ -11,15 +32,17 @@ enum ProgressStatus {
 }
 
 model User {
-  id              String    @id @default(uuid())
-  email           String    @unique
-  name            String?
-  passwordHash    String    @map("password_hash")
-  role            Role      @default(USER)
-  displayName     String?   @map("display_name")
-  avatarUrl       String?   @map("avatar_url")
-  isActive        Boolean   @default(true) @map("is_active")
-  emailVerifiedAt DateTime? @map("email_verified_at")
+  id                  String    @id @default(uuid())
+  email               String    @unique
+  name                String?
+  passwordHash        String    @map("password_hash")
+  role                Role      @default(USER)
+  displayName         String?   @map("display_name")
+  avatarUrl           String?   @map("avatar_url")
+  isActive            Boolean   @default(true) @map("is_active")
+  emailVerifiedAt     DateTime? @map("email_verified_at")
+  failedLoginAttempts Int       @default(0) @map("failed_login_attempts")
+  lockedUntil         DateTime? @map("locked_until")
 
   createdAt DateTime  @default(now()) @map("created_at")
   updatedAt DateTime  @updatedAt @map("updated_at")
@@ -32,24 +55,74 @@ model User {
   publishedVersions RoadmapVersion[] @relation("RoadmapVersionPublishedBy")
   bookmarks         Bookmark[]
   progressEntries   UserProgress[]
+  authTokens        AuthToken[]
+  authAuditLogs     AuthAuditLog[]
 }
 
 model Session {
-  id        String   @id @default(uuid())
-  userId    String   @map("user_id")
-  expiresAt DateTime @map("expires_at")
-  tokenHash String?  @map("token_hash")
-  userAgent String?  @map("user_agent")
-  ipAddress String?  @map("ip_address")
+  id                  String    @id @default(uuid())
+  userId              String    @map("user_id")
+  expiresAt           DateTime  @map("expires_at")
+  tokenHash           String?   @map("token_hash")
+  refreshFamilyId     String?   @map("refresh_family_id")
+  replacedBySessionId String?   @unique @map("replaced_by_session_id")
+  userAgent           String?   @map("user_agent")
+  ipAddress           String?   @map("ip_address")
+  lastSeenAt          DateTime? @map("last_seen_at")
 
-  revokedAt DateTime? @map("revoked_at")
-  createdAt DateTime  @default(now()) @map("created_at")
-  updatedAt DateTime  @updatedAt @map("updated_at")
+  revokedAt    DateTime? @map("revoked_at")
+  revokeReason String?   @map("revoke_reason")
+  createdAt    DateTime  @default(now()) @map("created_at")
+  updatedAt    DateTime  @updatedAt @map("updated_at")
 
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user              User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  replacedBySession Session?       @relation("SessionRotation", fields: [replacedBySessionId], references: [id], onDelete: SetNull)
+  previousSessions  Session[]      @relation("SessionRotation")
+  authTokens        AuthToken[]
+  authAuditLogs     AuthAuditLog[]
 
   @@index([userId, revokedAt, expiresAt])
+  @@index([refreshFamilyId])
+  @@index([tokenHash])
   @@map("sessions")
+}
+
+model AuthToken {
+  id         String           @id @default(uuid())
+  userId     String           @map("user_id")
+  sessionId  String?          @map("session_id")
+  purpose    AuthTokenPurpose
+  tokenHash  String           @unique @map("token_hash")
+  expiresAt  DateTime         @map("expires_at")
+  consumedAt DateTime?        @map("consumed_at")
+  createdAt  DateTime         @default(now()) @map("created_at")
+
+  user    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  session Session? @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+
+  @@index([userId, purpose, expiresAt])
+  @@index([purpose, consumedAt, expiresAt])
+  @@map("auth_tokens")
+}
+
+model AuthAuditLog {
+  id        String         @id @default(uuid())
+  userId    String?        @map("user_id")
+  sessionId String?        @map("session_id")
+  eventType AuditEventType @map("event_type")
+  ipAddress String?        @map("ip_address")
+  userAgent String?        @map("user_agent")
+  requestId String?        @map("request_id")
+  metadata  Json?
+  createdAt DateTime       @default(now()) @map("created_at")
+
+  user    User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  session Session? @relation(fields: [sessionId], references: [id], onDelete: SetNull)
+
+  @@index([userId, createdAt])
+  @@index([sessionId, createdAt])
+  @@index([eventType, createdAt])
+  @@map("auth_audit_logs")
 }
 
 model Bookmark {

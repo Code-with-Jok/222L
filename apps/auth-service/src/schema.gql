@@ -1,0 +1,105 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type AuthPayload {
+  accessToken: String!
+  expiresIn: Float!
+  identity: IdentityResponse!
+  refreshToken: String!
+  session: SessionResponse!
+  tokenType: String!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+input ForgotPasswordInput {
+  email: String!
+}
+
+type IdentityResponse {
+  createdAt: DateTime!
+  displayName: String
+  email: String!
+  emailVerifiedAt: DateTime
+  id: String!
+  isActive: Boolean!
+  role: String!
+  updatedAt: DateTime!
+}
+
+input LoginInput {
+  email: String!
+  password: String!
+}
+
+type Mutation {
+  forgotPassword(input: ForgotPasswordInput!): OperationResponse!
+  login(input: LoginInput!): AuthPayload!
+  logout(input: RefreshTokenInput!): OperationResponse!
+  logoutAll: OperationResponse!
+  refresh(input: RefreshTokenInput!): AuthPayload!
+  register(input: RegisterInput!): RegisterResponse!
+  requestEmailVerification(input: RequestEmailVerificationInput!): OperationResponse!
+  resetPassword(input: ResetPasswordInput!): OperationResponse!
+  revokeSession(sessionId: String!): OperationResponse!
+  verifyEmail(input: VerifyEmailInput!): OperationResponse!
+}
+
+type OperationResponse {
+  debugToken: String
+  message: String!
+  success: Boolean!
+}
+
+type Query {
+  me: IdentityResponse!
+  sessions: SessionListResponse!
+}
+
+input RefreshTokenInput {
+  refreshToken: String!
+}
+
+input RegisterInput {
+  displayName: String
+  email: String!
+  password: String!
+}
+
+type RegisterResponse {
+  debugToken: String
+  identity: IdentityResponse!
+  message: String!
+  success: Boolean!
+}
+
+input RequestEmailVerificationInput {
+  email: String!
+}
+
+input ResetPasswordInput {
+  newPassword: String!
+  token: String!
+}
+
+type SessionListResponse {
+  items: [SessionResponse!]!
+}
+
+type SessionResponse {
+  createdAt: DateTime!
+  expiresAt: DateTime!
+  id: String!
+  ipAddress: String
+  lastSeenAt: DateTime
+  revokedAt: DateTime
+  userAgent: String
+}
+
+input VerifyEmailInput {
+  token: String!
+}
