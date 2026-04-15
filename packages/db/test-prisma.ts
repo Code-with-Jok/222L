@@ -16,9 +16,9 @@ async function main() {
         email: "test@example.com",
         passwordHash: "123",
         sessions: {
-          create: [{ expiresAt: new Date(Date.now() + 60_000) }]
-        }
-      }
+          create: [{ expiresAt: new Date(Date.now() + 60_000) }],
+        },
+      },
     });
   } catch (e) {
     console.error(e);

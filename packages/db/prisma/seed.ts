@@ -10,7 +10,10 @@ import {
   RoadmapStatus,
   RoadmapVersionStatus,
   Role,
-} from "../src/generated/client/index.js";
+  AuditEventType,
+  AuthTokenPurpose,
+} from "@prisma/client";
+import * as argon2 from "argon2";
 
 const connectionString = process.env.DATABASE_URL;
 
@@ -26,6 +29,8 @@ const sessionExpiresAt = new Date(Date.now() + 1000 * 60 * 60 * 24 * 30);
 async function main() {
   console.log("Starting database seed...");
 
+  await prisma.authAuditLog.deleteMany();
+  await prisma.authToken.deleteMany();
   await prisma.tagsOnNodes.deleteMany();
   await prisma.tagsOnRoadmaps.deleteMany();
   await prisma.userProgress.deleteMany();
@@ -40,12 +45,14 @@ async function main() {
   await prisma.session.deleteMany();
   await prisma.user.deleteMany();
 
+  const commonPasswordHash = await argon2.hash("password123");
+
   const admin = await prisma.user.create({
     data: {
       email: "admin@example.com",
       name: "System Admin",
       displayName: "Roadmap Hub Admin",
-      passwordHash: "hashed_password_here",
+      passwordHash: commonPasswordHash,
       role: Role.ADMIN,
       sessions: {
         create: [
@@ -65,7 +72,7 @@ async function main() {
       email: "user@example.com",
       name: "Normal User",
       displayName: "Roadmap Learner",
-      passwordHash: "hashed_password_here",
+      passwordHash: commonPasswordHash,
       role: Role.USER,
       sessions: {
         create: [
@@ -74,6 +81,34 @@ async function main() {
           },
         ],
       },
+    },
+  });
+
+  await prisma.authAuditLog.createMany({
+    data: [
+      {
+        userId: admin.id,
+        eventType: AuditEventType.USER_REGISTERED,
+        ipAddress: "127.0.0.1",
+        userAgent: "seed-script",
+        metadata: { reason: "Initial seed registration" },
+      },
+      {
+        userId: user.id,
+        eventType: AuditEventType.USER_REGISTERED,
+        ipAddress: "127.0.0.1",
+        userAgent: "seed-script",
+        metadata: { reason: "Initial seed registration" },
+      },
+    ],
+  });
+
+  await prisma.authToken.create({
+    data: {
+      userId: user.id,
+      purpose: AuthTokenPurpose.EMAIL_VERIFICATION,
+      tokenHash: "seed-email-verification-token-hash",
+      expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000),
     },
   });
 
@@ -219,7 +254,8 @@ async function main() {
       roadmapId: roadmap.id,
       title: "Build APIs",
       slug: "build-apis",
-      description: "Design RESTful APIs, validation layers, and error handling.",
+      description:
+        "Design RESTful APIs, validation layers, and error handling.",
       type: NodeType.PROJECT,
       status: NodeStatus.PUBLISHED,
       parentId: rootNode.id,

@@ -2,10 +2,22 @@
   "$schema": "https://turborepo.dev/schema.json",
   "globalDependencies": [".env"],
   "ui": "tui",
-  "globalEnv": ["DATABASE_URL", "NODE_ENV"],
+  "globalEnv": [
+    "DATABASE_URL",
+    "NODE_ENV",
+    "PORT",
+    "NEXT_DIST_DIR",
+    "AUTH_JWT_SECRET",
+    "AUTH_ACCESS_TOKEN_TTL_SECONDS",
+    "AUTH_REFRESH_TOKEN_TTL_DAYS",
+    "AUTH_EMAIL_VERIFICATION_TTL_HOURS",
+    "AUTH_PASSWORD_RESET_TTL_MINUTES",
+    "AUTH_MAX_FAILED_LOGINS",
+    "AUTH_LOCK_MINUTES"
+  ],
   "tasks": {
     "build": {
-      "dependsOn": ["^build", "^db:generate"],
+      "dependsOn": ["^build"],
       "inputs": ["$TURBO_DEFAULT$", ".env*"],
       "outputs": [".next/**", "!.next/cache/**", "dist/**"]
     },
@@ -16,7 +28,7 @@
       "dependsOn": ["^check-types"]
     },
     "dev": {
-      "dependsOn": ["^db:generate"],
+      "dependsOn": ["^build"],
       "cache": false,
       "persistent": true
     },
