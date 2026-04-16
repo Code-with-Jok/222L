@@ -14,7 +14,6 @@ import {
 
 const connectionString = process.env.DATABASE_URL;
 
-console.log("Using DATABASE_URL:", connectionString);
 console.log(
   "Using DATABASE_URL:",
   connectionString?.replace(/:[^:@]+@/, ":****@")

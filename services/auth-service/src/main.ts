@@ -6,12 +6,18 @@ import swaggerConfig from "./config/swagger";
 async function bootstrap() {
   const app = await createApp();
 
-  const swggerDocument = SwaggerModule.createDocument(app, swaggerConfig);
+  const swaggerDocument = SwaggerModule.createDocument(app, swaggerConfig);
   const swaggerPath = "docs";
-  SwaggerModule.setup(swaggerPath, app, swggerDocument);
+  SwaggerModule.setup(swaggerPath, app, swaggerDocument);
 
-  const PORT = Number(process.env.PORT);
-  await app.listen(PORT);
+  const rawPort = process.env.PORT;
+  const PORT = rawPort ? parseInt(rawPort, 10) : 3000;
+
+  if (isNaN(PORT) || PORT <= 0) {
+    console.warn(`⚠️ Invalid PORT "${rawPort}" specified. Falling back to 3000.`);
+  }
+
+  await app.listen(PORT || 3000);
 
   console.log(`🚀 Auth service listening on http://localhost:${PORT}`);
   console.log(

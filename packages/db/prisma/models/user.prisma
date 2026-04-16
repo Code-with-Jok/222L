@@ -61,7 +61,7 @@ model Session {
   // relationships
   user              User        @relation("UserSessions", fields: [userId], references: [id], onDelete: Cascade)
   replacedBySession Session?    @relation("SessionRotation", fields: [replacedBySessionId], references: [id], onDelete: SetNull)
-  previousSessions  Session[]   @relation("SessionRotation")
+  previousSession   Session?    @relation("SessionRotation")
   authTokens        AuthToken[] @relation("SessionAuthTokens")
 
   @@index([userId, revokedAt, expiresAt])
@@ -141,7 +141,7 @@ model UserProgress {
   roadmap     Roadmap     @relation("RoadmapProgress", fields: [roadmapId], references: [id], onDelete: Cascade)
   roadmapNode RoadmapNode @relation("RoadmapNodeProgress", fields: [roadmapNodeId], references: [id], onDelete: Cascade)
 
-  @@unique([userId, roadmapId, roadmapNodeId])
+  @@unique([userId, roadmapNodeId])
   @@index([userId, roadmapId, status, createdAt])
   @@map("user_progress")
 }

@@ -2,7 +2,17 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type Mutation {
+  register(input: RegisterInput!): String!
+}
+
 type Query {
   hello: String!
   sayHello: String!
+}
+
+input RegisterInput {
+  displayName: String
+  email: String!
+  password: String!
 }

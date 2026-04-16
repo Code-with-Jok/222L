@@ -18,11 +18,7 @@ import { AuthModule } from "./modules/auth/auth.module";
       playground: false,
       path: "/graphql",
       plugins: [ApolloServerPluginLandingPageLocalDefault()],
-      context: ({ req, res }: { req: unknown; res: unknown }) => {
-        console.log("req:", req);
-        console.log("res:", res);
-        return { req, res };
-      },
+      context: ({ req, res }: { req: unknown; res: unknown }) => ({ req, res }),
     }),
 
     AuthModule,

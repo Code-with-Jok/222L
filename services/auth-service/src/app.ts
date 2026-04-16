@@ -5,7 +5,10 @@ import { AppModule } from "./app.module";
 async function createApp(): Promise<INestApplication> {
   const app = await NestFactory.create(AppModule, {
     logger: ["error", "warn"],
-    cors: true,
+    cors: {
+      origin: process.env.ALLOWED_ORIGINS?.split(",") || ["http://localhost:3000"],
+      credentials: true,
+    },
   });
 
   app.useGlobalPipes(
