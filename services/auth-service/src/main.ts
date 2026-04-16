@@ -7,13 +7,16 @@ async function bootstrap() {
   const app = await createApp();
 
   const swggerDocument = SwaggerModule.createDocument(app, swaggerConfig);
-  SwaggerModule.setup("api", app, swggerDocument);
+  const swaggerPath = "docs";
+  SwaggerModule.setup(swaggerPath, app, swggerDocument);
 
   const PORT = Number(process.env.PORT);
   await app.listen(PORT);
 
   console.log(`🚀 Auth service listening on http://localhost:${PORT}`);
-  console.log(`📖 Documentation available at http://localhost:${PORT}/docs`);
+  console.log(
+    `📖 Documentation available at http://localhost:${PORT}/${swaggerPath}`
+  );
   console.log(`🔷 GraphQL playground at http://localhost:${PORT}/graphql`);
 }
 

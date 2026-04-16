@@ -6,6 +6,7 @@ import { GraphQLModule } from "@nestjs/graphql";
 import { ApolloDriver, ApolloDriverConfig } from "@nestjs/apollo";
 import { ApolloServerPluginLandingPageLocalDefault } from "@apollo/server/plugin/landingPage/default";
 import { join } from "path";
+import { AuthModule } from "./modules/auth/auth.module";
 
 @Module({
   imports: [
@@ -23,6 +24,8 @@ import { join } from "path";
         return { req, res };
       },
     }),
+
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService, AppResolver],
