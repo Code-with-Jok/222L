@@ -1,8 +1,8 @@
-import { Role } from "@repo/db";
+import { Role } from "../enums/role.enum";
 
 export class User {
   constructor(
-    public readonly id: string,
+    public readonly id: string | undefined,
     public readonly email: string,
     public readonly passwordHash: string,
     public readonly role: Role,
@@ -21,7 +21,7 @@ export class User {
     role?: Role;
   }): User {
     return new User(
-      "", // ID sẽ được sinh ra bởi persistence layer hoặc nanoid
+      undefined,
       data.email,
       data.passwordHash,
       data.role || Role.USER,

@@ -1,4 +1,4 @@
-export type DatabaseProvider = "unconfigured";
+export type DatabaseProvider = "postgres" | "mysql" | "sqlite" | "unconfigured";
 
 export interface DatabaseConfig {
   provider: DatabaseProvider;
